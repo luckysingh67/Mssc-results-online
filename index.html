@@ -1,0 +1,165 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CSJMU MSC 2ND SEMESTER EXAMINATION RESULT</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #f5f8ff;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        header {
+            background-color: #2e5aac;
+            color: white;
+            padding: 20px 0;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .container {
+            background: white;
+            margin: 30px auto;
+            padding: 30px;
+            max-width: 900px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+        }
+        th {
+            background-color: #e4ecff;
+        }
+        .info {
+            text-align: left;
+            margin-top: 20px;
+        }
+        .info p {
+            margin: 6px 0;
+        }
+        .highlight {
+            font-weight: bold;
+        }
+        .grade-box {
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-weight: bold;
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .input-group {
+            margin-bottom: 20px;
+        }
+        input {
+            padding: 10px;
+            width: 200px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            margin: 0 10px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #2e5aac;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 10px;
+        }
+        button:hover {
+            background-color: #234a8b;
+        }
+    </style>
+    <script>
+        const studentData = [
+            {
+                "rollNo": "24063000672",
+                "enroll": "CSJMA24000127640",
+                "name": "Sandeep Kumar",
+                "dob": "08/08/2003",
+                "father": "Mr. Shivkumar",
+                "mother": "Mrs. Sudha",
+                "program": "MASTER OF SCIENCE (CHEMISTRY)",
+                "subjects": [
+                    ["INORGANIC CHEMISTRY - II", 64, 24],
+                    ["ORGANIC CHEMISTRY - II", 69, 24],
+                    ["PHYSICAL CHEMISTRY - II", 60, 24],
+                    ["ENVIRONMENTAL CHEMISTRY", 58, 23],
+                    ["MEDIA LEKHAN", 52, 23],
+                    ["PRACTICAL", 73, 23],
+                    ["RESEARCH PROJECT", 69, 22]
+                ],
+                "totalMarks": 608,
+                "maxMarks": 675,
+                "cgpa": "8.58",
+                "result": "PASS"
+            }
+        ];
+
+        function showResult() {
+            const roll = document.getElementById("rollNo").value.trim();
+            const enroll = document.getElementById("enrollNo").value.trim();
+            const result = studentData.find(s => s.rollNo === roll && s.enroll === enroll);
+            const resultDiv = document.getElementById("result");
+
+            if (result) {
+                let html = `
+                    <div class="info">
+                        <p><span class="highlight">Roll Number:</span> ${result.rollNo}</p>
+                        <p><span class="highlight">Name:</span> ${result.name}</p>
+                        <p><span class="highlight">Enrollment No:</span> ${result.enroll}</p>
+                        <p><span class="highlight">Date of Birth:</span> ${result.dob}</p>
+                        <p><span class="highlight">Father's Name:</span> ${result.father}</p>
+                        <p><span class="highlight">Mother's Name:</span> ${result.mother}</p>
+                        <p><span class="highlight">Program:</span> ${result.program}</p>
+                    </div>
+                    <table>
+                        <tr><th>Subject</th><th>Theory Marks (75)</th><th>Practical Marks (25)</th><th>Total</th><th>Grade</th></tr>`;
+                result.subjects.forEach(([sub, theory, practical]) => {
+                    const total = theory + practical;
+                    html += `<tr>
+                        <td>${sub}</td>
+                        <td>${theory}</td>
+                        <td>${practical}</td>
+                        <td>${total}</td>
+                        <td><span class="grade-box">A</span></td>
+                    </tr>`;
+                });
+                html += `</table>
+                    <h3 style="margin-top: 20px;">Total Marks: ${result.totalMarks} / ${result.maxMarks} | CGPA: ${result.cgpa}</h3>
+                    <h3 style="color: white; background-color: green; display: inline-block; padding: 8px 16px; border-radius: 8px;">Result: ${result.result}</h3>
+                    `;
+                resultDiv.innerHTML = html;
+            } else {
+                resultDiv.innerHTML = "<p style='color:red;'>Student not found. Please check Roll No and Enrollment No.</p>";
+            }
+        }
+    </script>
+</head>
+<body>
+    <header>CSJMU MSC 2ND SEMESTER EXAMINATION RESULT</header>
+    <div class="container">
+        <div class="input-group">
+            <label for="rollNo" style="display: block; font-weight: 500; margin-bottom: 5px;">Roll Number</label>
+            <input type="text" id="rollNo" placeholder="Enter Roll Number" style="width: 100%; margin-bottom: 15px;">
+            <label for="enrollNo" style="display: block; font-weight: 500; margin-bottom: 5px;">Enrollment Number</label>
+            <input type="text" id="enrollNo" placeholder="Enter Enrollment Number" style="width: 100%; margin-bottom: 20px;">
+            <div style="text-align: center;">
+                <button onclick="showResult()">Check Result</button>
+                <button onclick="document.getElementById('rollNo').value=''; document.getElementById('enrollNo').value=''; document.getElementById('result').innerHTML='';">Clear</button>
+            </div>
+        </div>
+        <div id="result" class="result-card"></div>
+    </div>
+</body>
+</html>
