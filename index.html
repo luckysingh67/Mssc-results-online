@@ -1,0 +1,230 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PSUB Examination Registration</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f4f7f9;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background: linear-gradient(90deg, #002147, #004080);
+      color: white;
+      padding: 25px 20px;
+      text-align: center;
+      font-size: 28px;
+      font-weight: bold;
+      letter-spacing: 1.2px;
+      text-shadow: 1px 1px 2px #000;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 40px auto;
+      background: white;
+      padding: 35px;
+      border-radius: 15px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+      transition: transform 0.2s ease-in-out;
+    }
+
+    .container:hover {
+      transform: scale(1.01);
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 600;
+      color: #333;
+    }
+
+    input[type="text"],
+    input[type="date"],
+    input[type="file"] {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 15px;
+    }
+
+    button {
+      background: #0056b3;
+      color: white;
+      padding: 14px;
+      width: 100%;
+      font-size: 16px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background: #003f7f;
+    }
+
+    .result {
+      margin-top: 25px;
+      padding: 18px;
+      background: #e6f2ff;
+      border-left: 6px solid #0056b3;
+      display: none;
+      border-radius: 5px;
+    }
+
+    .result strong {
+      display: block;
+      margin: 6px 0;
+    }
+  
+/* Loading Spinner */
+#loading {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(255,255,255,0.8);
+  z-index: 9999;
+}
+
+.spinner {
+  border: 6px solid #f3f3f3;
+  border-top: 6px solid #0056b3;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  animation: spin 1s linear infinite;
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+@keyframes spin {
+  0% { transform: translate(-50%, -50%) rotate(0deg); }
+  100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* Success Animation */
+.result {
+  margin-top: 25px;
+  padding: 18px;
+  background: #e6f2ff;
+  border-left: 6px solid #0056b3;
+  display: none;
+  border-radius: 5px;
+  animation: fadeIn 0.8s ease-in-out forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Email Sent Confirmation */
+#emailConfirm {
+  display: none;
+  margin-top: 15px;
+  padding: 12px;
+  background: #d4edda;
+  border-left: 6px solid #28a745;
+  color: #155724;
+  border-radius: 5px;
+  animation: fadeIn 0.8s ease-in-out forwards;
+}
+</style>
+</head>
+<body>
+
+<header>PSUB EXAMINATION REGISTRATION</header>
+
+<div class="container">
+  <div class="form-group">
+    <label for="name">Full Name</label>
+    <input type="text" id="name" placeholder="Enter your full name" />
+  </div>
+  <div class="form-group">
+    <label for="father">Father's Name</label>
+    <input type="text" id="father" placeholder="Enter father's name" />
+  </div>
+  <div class="form-group">
+    <label for="mother">Mother's Name</label>
+    <input type="text" id="mother" placeholder="Enter mother's name" />
+  </div>
+  <div class="form-group">
+    <label for="dob">Date of Birth</label>
+    <input type="date" id="dob" />
+  </div>
+  <div class="form-group">
+    <label for="photo">Upload Your Photo</label>
+    <input type="file" id="photo" accept="image/*" />
+  </div>
+  <button onclick="register()">Register</button>
+
+  <div class="result" id="result">
+    <h3>Registration Successful!</h3>
+    <strong id="roll"></strong>
+    <strong id="admission"></strong>
+  </div>
+</div>
+
+<script>
+  
+function register() {
+  document.getElementById('loading').style.display = 'block';
+  setTimeout(() => {
+
+    const name = document.getElementById('name').value.trim();
+    const father = document.getElementById('father').value.trim();
+    const mother = document.getElementById('mother').value.trim();
+    const dob = document.getElementById('dob').value;
+    const photo = document.getElementById('photo').files[0];
+
+    if (!name || !father || !mother || !dob || !photo) {
+      alert("Please fill in all fields and upload a photo.");
+      return;
+    }
+
+    const roll = Math.floor(1000000 + Math.random() * 9000000);
+    const admission = Math.floor(10000000 + Math.random() * 90000000);
+
+    document.getElementById('roll').innerText = "Roll Number: " + roll;
+    document.getElementById('admission').innerText = "Admission Number: " + admission;
+    
+    document.getElementById('result').style.display = 'block';
+    
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('successSound').play();
+    setTimeout(() => {
+      document.getElementById('emailConfirm').style.display = 'block';
+    }, 800);
+
+  }, 1500);
+
+  }
+</script>
+
+
+<div id="loading">
+  <div class="spinner"></div>
+
+  <div id="emailConfirm">Confirmation email sent successfully!</div>
+</div>
+
+<!-- Sound Alert -->
+<audio id="successSound" src="https://www.soundjay.com/buttons/sounds/button-3.mp3" preload="auto"></audio>
+</body>
+
+</html>
